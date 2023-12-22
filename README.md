@@ -15,6 +15,6 @@ docker build -t markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2 --no-cache 
 docker image rm 05a7f4388028
 
 docker-slim --report xray.json xray --target markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2
-docker-slim --report profile.json profile --target markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2
-docker-slim --report build.json build --target markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2 --copy-meta-artifacts .
+docker-slim --report profile.json profile --target markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2 --http-probe=false --continue-after=1
+docker-slim --report build.json build --target markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2 --tage markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2--slim --copy-meta-artifacts . --http-probe=false --continue-after=1
 ```

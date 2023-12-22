@@ -1,6 +1,7 @@
 FROM alpine:20231219
 
-MAINTAINER Artem Klevtsov a.a.klevtsov@gmail.com
+# Note: used code from https://gitlab.com/artemklevtsov/r-alpine/-/blob/master/Dockerfile?ref_type=heads
+MAINTAINER Mark Robinson mark.robinson@mls.uzh.ch
 
 ARG R_VERSION
 ENV R_VERSION ${R_VERSION:-4.3.2}
@@ -8,8 +9,6 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV CRAN https://cran.r-project.org
 ENV R_DAILY_URL https://stat.ethz.ch/R/daily
-
-COPY install.R /tmp/
 
     # R runtime dependencies
 RUN apk --no-cache add \
@@ -102,13 +101,9 @@ RUN apk --no-cache add \
     rm -rf /usr/lib/R/doc && \
     mkdir -p /usr/lib/R/doc/html && \
     touch /usr/lib/R/doc/html/R.css && \
-    #/usr/bin/R -f /tmp/install.R && \
+    # trim some large things
     rm -rf /usr/libexec/gcc/x86_64-alpine-linux-musl/* && \
     rm -rf /usr/lib/R/*/*/help/*.rdb && \
     rm -rf /var/cache/apk/* && \
     rm -rf /usr/bin/lto-dump && \
     rm -rf /tmp/*
-
-RUN cd
-#
-##CMD ["R"]
