@@ -105,7 +105,8 @@ RUN set -eux; \
 		| xargs -rt apk add --no-network --virtual .python-rundeps \
 	; \
 	apk del --no-network .build-deps; \
-	\
+        # time large things that are prob not needed
+        /bin/rm -rf /usr/bin/lto-dump; \
 	python3 --version
 
 # make some useful symlinks that are expected to exist ("/usr/local/bin/python" and friends)
