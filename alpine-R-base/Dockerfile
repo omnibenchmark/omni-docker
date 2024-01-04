@@ -106,4 +106,8 @@ RUN apk --no-cache add \
     rm -rf /usr/lib/R/*/*/help/*.rdb && \
     rm -rf /var/cache/apk/* && \
     rm -rf /usr/bin/lto-dump && \
+    # remove some duplicates
+    rm -rf /usr/bin/x86_64-alpine-linux-musl-gcc && \
+    rm -rf /usr/x86_64-alpine-linux-musl/bin/as && \
+    rm -rf /usr/x86_64-alpine-linux-musl/bin/ld && \
     rm -rf /tmp/*
