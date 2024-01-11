@@ -29,17 +29,20 @@ RUN apk --no-cache add \
         tiff-dev  \
         curl-dev \
         openblas-dev \
+        pango-dev \
+        libxml2 \
+        cairo-dev \
+        libxt-dev \
+        libx11-dev \
+        libxmu-dev \
         zip \
         file \
         coreutils \
-        bash && \
+        bash  && \
     # R build dependencies
     apk --no-cache add --virtual build-deps \
         perl \
         openjdk8-jre-base \
-        libxmu-dev \
-        pango-dev \
-        cairo-dev \
         tcl-dev \
         tk-dev && \
     cd /tmp && \
@@ -69,8 +72,8 @@ RUN apk --no-cache add \
                 --enable-R-shlib \
                 --enable-java \
                 --disable-nls \
-                --with-blas=openblas \
-                --without-recommended-packages && \
+    #           --without-recommended-packages && \
+                --with-blas=openblas && \
     # Build and install R
     make -j $(nproc) && \
     make install && \
@@ -110,4 +113,7 @@ RUN apk --no-cache add \
     rm -rf /usr/bin/x86_64-alpine-linux-musl-gcc && \
     rm -rf /usr/x86_64-alpine-linux-musl/bin/as && \
     rm -rf /usr/x86_64-alpine-linux-musl/bin/ld && \
-    rm -rf /tmp/*
+    rm -rf /tmp/* && \
+    R --vanilla -e 'capabilities()' && \
+    apk info -v 2> /dev/null | grep -e lapack -e blas -e zlib 
+
