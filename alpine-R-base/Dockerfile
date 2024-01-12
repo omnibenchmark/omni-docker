@@ -9,12 +9,14 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV CRAN https://cran.r-project.org
 ENV R_DAILY_URL https://stat.ethz.ch/R/daily
+ENV PATH /bin:/venv/bin:$PATH 
 
     # R runtime dependencies
 RUN apk --no-cache add \
         linux-headers \
         gcc \
         gfortran \
+        musl-locales \
         g++ \
         make \
         readline-dev \
@@ -32,19 +34,22 @@ RUN apk --no-cache add \
         pango-dev \
         libxml2 \
         cairo-dev \
-        libxt-dev \
-        libx11-dev \
-        libxmu-dev \
+        git git-annex \
         zip \
         file \
         coreutils \
         bash  && \
-    # R build dependencies
+    # build dependencies
     apk --no-cache add --virtual build-deps \
         perl \
         openjdk8-jre-base \
         tcl-dev \
+        python3-dev \
+        py3-pip \
         tk-dev && \
+    # renku-python
+    python3 -m venv /venv && \
+    pip3 install omnibenchmark && \
     cd /tmp && \
     # Download source code
     if [[ "${R_VERSION}" == "devel" || "${R_VERSION}" == "patched" ]]; then \
@@ -71,8 +76,9 @@ RUN apk --no-cache add \
                 --enable-memory-profiling \
                 --enable-R-shlib \
                 --enable-java \
+                --with-x=no \
                 --disable-nls \
-    #           --without-recommended-packages && \
+                #--without-recommended-packages && \
                 --with-blas=openblas && \
     # Build and install R
     make -j $(nproc) && \
@@ -105,15 +111,37 @@ RUN apk --no-cache add \
     mkdir -p /usr/lib/R/doc/html && \
     touch /usr/lib/R/doc/html/R.css && \
     # trim some large things
-    rm -rf /usr/libexec/gcc/x86_64-alpine-linux-musl/* && \
     rm -rf /usr/lib/R/*/*/help/*.rdb && \
     rm -rf /var/cache/apk/* && \
     rm -rf /usr/bin/lto-dump && \
+    rm -rf /root/.cache/ && \
     # remove some duplicates
     rm -rf /usr/bin/x86_64-alpine-linux-musl-gcc && \
+    rm -rf /usr/bin/x86_64-alpine-linux-musl-gcc-13.2.1 && \
+    ln -s /usr/bin/gcc /usr/bin/x86_64-alpine-linux-musl-gcc-13.2.1 && \
+    rm -rf /usr/bin/x86_64-alpine-linux-musl-gfortran && \
+    ln -s /usr/bin/gfortran /usr/bin/x86_64-alpine-linux-musl-gfortran && \
+    rm -rf /usr/bin/g++ /usr/bin/x86_64-alpine-linux-musl-c++ /usr/bin/x86_64-alpine-linux-musl-g++ && \
+    ln -s /usr/bin/c++ /usr/bin/g++ && \
+    ln -s /usr/bin/c++ /usr/bin/x86_64-alpine-linux-musl-c++ && \
+    ln -s /usr/bin/c++ /usr/bin/x86_64-alpine-linux-musl-g++ && \
+    rm -rf /usr/bin/ld.bfd && \
+    ln -s /usr/bin/ld /usr/bin/lb.bfd && \
     rm -rf /usr/x86_64-alpine-linux-musl/bin/as && \
     rm -rf /usr/x86_64-alpine-linux-musl/bin/ld && \
     rm -rf /tmp/* && \
+    # log some versions
     R --vanilla -e 'capabilities()' && \
-    apk info -v 2> /dev/null | grep -e lapack -e blas -e zlib 
+    apk info -v 2> /dev/null | grep -e lapack -e blas -e zlib && \
+    echo "renku version: $(renku --version)" && \
+    echo "omnibenchmark version: $(pip freeze | grep omnib)" && \
+    # more clean-up
+    rm -rf /usr/share/xml/docbook && \
+    rm -rf /usr/share/doc/R && \
+    rm -rf /venv/lib/python3.11/site-packages/pip  # clunky but 
+
+
+ENV LANG C.UTF-8
+ENV LANGUAGE C.UTF-8 
+ENV LC_ALL C.UTF-8
 
