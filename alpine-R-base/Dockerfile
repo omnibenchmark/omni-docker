@@ -32,7 +32,7 @@ RUN apk --no-cache add \
         curl-dev \
         openblas-dev \
         pango-dev \
-        libxml2 \
+        libxml2 libxml2-dev \
         cairo-dev \
         git git-annex \
         zip \
@@ -109,7 +109,10 @@ RUN apk --no-cache add \
     rm -rf /usr/lib/R/library/translations && \
     rm -rf /usr/lib/R/doc && \
     mkdir -p /usr/lib/R/doc/html && \
+    mkdir -p /usr/share/doc/R && \
+    mkdir -p /usr/share/doc/R/html && \
     touch /usr/lib/R/doc/html/R.css && \
+    touch /usr/share/doc/R/html/R.css && \
     # trim some large things
     rm -rf /usr/lib/R/*/*/help/*.rdb && \
     rm -rf /var/cache/apk/* && \
