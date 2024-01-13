@@ -1,1 +1,1 @@
-docker build -t markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2--bioc --no-cache --progress=plain . 2>&1 | tee build.log
+docker build -t markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2 --no-cache --progress=plain . 2>&1 | tee build.log
