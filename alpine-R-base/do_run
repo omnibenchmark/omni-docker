@@ -1,0 +1,1 @@
+docker run -it markrobinsonuzh/omni-docker:alpine-20231219--R-4.3.2 /bin/bash

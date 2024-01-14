@@ -1,3 +1,3 @@
-install.packages("BiocManager", quiet = TRUE)
+install.packages("BiocManager")
 
-BiocManager::install("SpatialExperiment", quiet = TRUE)
+BiocManager::install("SpatialExperiment")
