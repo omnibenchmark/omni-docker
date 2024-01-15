@@ -11,6 +11,7 @@ ENV CRAN https://cran.r-project.org
 ENV R_DAILY_URL https://stat.ethz.ch/R/daily
 ENV PATH /bin:/venv/bin:$PATH 
 
+
     # R runtime dependencies
 RUN apk --no-cache add \
         linux-headers \
@@ -143,6 +144,9 @@ RUN apk --no-cache add \
     rm -rf /usr/share/doc/R && \
     rm -rf /venv/lib/python3.11/site-packages/pip  # clunky but 
 
+# Create the user
+RUN adduser -D -g omb omb
+USER omb
 
 ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8 
