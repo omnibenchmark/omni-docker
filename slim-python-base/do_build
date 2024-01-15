@@ -1,0 +1,1 @@
+docker build -t markrobinsonuzh/omni-docker:slim-py-3.11.7 --no-cache --progress=plain . 2>&1 | tee build.log
