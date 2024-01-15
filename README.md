@@ -26,8 +26,8 @@ docker build -t markrobinsonuzh/omni-docker:slim-py-3.11--pandas --no-cache --pr
 docker push markrobinsonuzh/omni-docker:slim-py-3.11--pandas
 
 # alpine-py-base/
-docker build -t markrobinsonuzh/omni-docker:alpine-20231219--py-3.11 --no-cache --progress=plain . 2>&1 | tee build.log
-docker push markrobinsonuzh/omni-docker:alpine-20231219--py-3.11
+docker build -t markrobinsonuzh/omni-docker:alpine-20231219--py-3.11.7 --no-cache --progress=plain . 2>&1 | tee build.log
+docker push markrobinsonuzh/omni-docker:alpine-20231219--py-3.11.7
 
 # alpine-py-base-pandas/
 docker build -t markrobinsonuzh/omni-docker:alpine-20231219--py-3.11--pandas --no-cache --progress=plain . 2>&1 | tee build.log
